@@ -1,0 +1,28 @@
+{
+  "name": "ses-to-slack",
+  "version": "1.0.0",
+  "description": "AWS SES to Slack",
+  "main": "index.js",
+  "scripts": {
+    "serverless": "serverless",
+    "deploy": "serverless deploy -v",
+    "package": "serverless package"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-es2017": "^6.24.1",
+    "serverless": "^1.24.1",
+    "serverless-webpack": "^4.0.0",
+    "webpack": "^3.8.1",
+    "webpack-node-externals": "^1.6.0"
+  },
+  "dependencies": {
+    "@slack/client": "^3.14.2",
+    "babel-runtime": "^6.26.0",
+    "mailparser": "^2.1.0"
+  }
+}

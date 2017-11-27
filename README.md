@@ -57,10 +57,19 @@ Mattermost is a Slack alternative. You can send mails to a Mattermost channel as
 If the instance is protected by the security group, you can send mails via VPC.
 For example,
 
-- SES (us-west-2)
-- SNS (us-west-2)
-- Lambda with VPC (ap-northeast-1)
-- EC2 (ap-northeast-1)
+```
+Mail Server
+↓ SMTP
+AWS SES
+↓ Publish
+AWS SNS
+↓ Subscribe
+AWS Lambda
+↓ HTTP(S)
+Slack Incoming Webhook
+```
+
+If a reverse proxy exists and requires `Host` header, you can specify the `WEBHOOK_HOST_HEADER` environment variable.
 
 
 ## Caveat

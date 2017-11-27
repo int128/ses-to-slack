@@ -1,22 +1,21 @@
 # SES to Slack
 
-This is an AWS Lambda function to forward mails from SES to Slack.
+This is an AWS Lambda function to forward mails from SES to Slack, based on the Serverless framework.
 
 
 ## How it works
 
-SMTP → AWS SES → AWS SNS → AWS Lambda → Slack Incoming Webhook
-
-![diagram](https://lh5.googleusercontent.com/V-8BCBJhk2ZN4iCg77Ohl-JrKIhTl9uMqKbkl91aWo3BoWy4Zu8_fAIiRgvDfiy5Oz-QqKgg8-1NhEYjHdo0=w2456-h1408)
-
-A Lambda function can be deployed on a region different from SES and SNS.
-This may be useful for VPC internal request to a Slack compatible API such as Mattermost.
-For example,
-
-- SES (us-west-2)
-- SNS (us-west-2)
-- Lambda with VPC (ap-northeast-1)
-- EC2 (ap-northeast-1)
+```
+Mail Server
+↓ SMTP
+AWS SES
+↓ Publish
+AWS SNS
+↓ Subscribe
+AWS Lambda
+↓ HTTP(S)
+Slack Incoming Webhook
+```
 
 
 ## Getting Started
@@ -36,7 +35,8 @@ Open the AWS Management Console and do following steps:
 
 1. Open Lambda and Check ARN of the function, like `arn:aws:lambda:ap-northeast-1:***:function:ses-to-slack-dev-handle`.
 1. Add an environment variable on the function:
-    - `WEBHOOK` = URL of Slack Incoming Webhook
+    - `WEBHOOK`: URL of Slack Incoming Webhook (Mandatory)
+    - `WEBHOOK_HOST_HEADER`: Host header for Incoming Webhook request (Optional)
 1. Open SNS and create a topic.
 1. Create a subscription on the topic:
     - Protocol: AWS Lambda.
@@ -45,6 +45,22 @@ Open the AWS Management Console and do following steps:
 1. Create a rule set with the following action:
     - SNS topic: ARN of the SNS topic.
     - Encoding: UTF-8
+
+
+## Sending to Mattermost
+
+Mattermost is a Slack alternative. You can send mails to a Mattermost channel as well.
+
+1. Create an Incoming Webhook on a Mattermost team.
+1. Set the `WEBHOOK` environment variable.
+
+If the instance is protected by the security group, you can send mails via VPC.
+For example,
+
+- SES (us-west-2)
+- SNS (us-west-2)
+- Lambda with VPC (ap-northeast-1)
+- EC2 (ap-northeast-1)
 
 
 ## Caveat

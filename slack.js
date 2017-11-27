@@ -1,8 +1,10 @@
-import {IncomingWebhook} from '@slack/client';
+import {IncomingWebhook, requestOptionsTransport} from '@slack/client';
 
 export default class Slack {
-  constructor(webhook) {
-    this.incomingWebhook = new IncomingWebhook(webhook);
+  constructor(webhook, options) {
+    this.incomingWebhook = new IncomingWebhook(webhook, {
+      _transport: requestOptionsTransport(options)
+    });
   }
 
   send(message) {

@@ -9,7 +9,11 @@ async function processContent(content) {
 
 ${mail.text}
 `;
-  const slack = new Slack(process.env.WEBHOOK);
+  const slack = new Slack(process.env.WEBHOOK, {
+    headers: {
+      host: process.env.WEBHOOK_HOST_HEADER
+    }
+  });
   return await slack.send(message);
 }
 

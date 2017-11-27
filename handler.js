@@ -5,6 +5,8 @@ async function processContent(content) {
   const mail = await simpleParser(content);
   const message = `
 \`From:\` ${mail.from.text}
+\`To:\` ${mail.to.text}
+\`Date:\` ${mail.date.toLocaleString()}
 \`Subject:\` ${mail.subject}
 
 ${mail.text}

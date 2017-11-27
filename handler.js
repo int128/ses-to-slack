@@ -1,28 +1,22 @@
-import {simpleParser} from 'mailparser';
 import Slack from './slack';
+import template from './template';
 
-async function processContent(content) {
-  const mail = await simpleParser(content);
-  const message = `
-\`From:\` ${mail.from.text}
-\`To:\` ${mail.to.text}
-\`Date:\` ${mail.date.toLocaleString()}
-\`Subject:\` ${mail.subject}
+const slack = new Slack(process.env.WEBHOOK, {
+  username: process.env.WEBHOOK_USERNAME,
+  iconEmoji: process.env.WEBHOOK_ICON_EMOJI,
+}, {
+  headers: {host: process.env.WEBHOOK_HOST_HEADER}
+});
 
-${mail.text}
-`;
-  const slack = new Slack(process.env.WEBHOOK, {
-    headers: {
-      host: process.env.WEBHOOK_HOST_HEADER
-    }
-  });
+async function processMailContent(content) {
+  const message = await template(content);
   return await slack.send(message);
 }
 
 async function processEvent(event) {
   return Promise.all(event.Records.map(record => {
     const {content} = JSON.parse(record.Sns.Message);
-    return processContent(content);
+    return processMailContent(content);
   }));
 }
 

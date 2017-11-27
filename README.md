@@ -36,6 +36,8 @@ Open the AWS Management Console and do following steps:
 1. Open Lambda and Check ARN of the function, like `arn:aws:lambda:ap-northeast-1:***:function:ses-to-slack-dev-handle`.
 1. Add an environment variable on the function:
     - `WEBHOOK`: URL of Slack Incoming Webhook (Mandatory)
+    - `WEBHOOK_USERNAME`: Username for Incoming Webhook request (Optional)
+    - `WEBHOOK_ICON_EMOJI`: Icon for Incoming Webhook request (Optional)
     - `WEBHOOK_HOST_HEADER`: Host header for Incoming Webhook request (Optional)
 1. Open SNS and create a topic.
 1. Create a subscription on the topic:
@@ -65,8 +67,10 @@ AWS SES
 AWS SNS
 ↓ Subscribe
 AWS Lambda
-↓ HTTP(S)
-Slack Incoming Webhook
+↓ ENI
+↓ VPC
+↓ ENI
+AWS EC2
 ```
 
 If a reverse proxy exists and requires `Host` header, you can specify the `WEBHOOK_HOST_HEADER` environment variable.
